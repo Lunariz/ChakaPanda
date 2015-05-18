@@ -76,14 +76,22 @@ void clickMenu() {
     else mousereleased = true;
   }
   if (options) {
-    if (mouseX >= 380 && mouseX <= 660 && mouseY >= 225 && mouseY <= 265 && mousepressed && !mousereleased) {
+    if (mouseX >= 380 && mouseX <= 660 && mouseY >= 215 && mouseY <= 265 && mousepressed && !mousereleased) {
       options = false;
       mainMenu = true;
       mousereleased = true;
     }
     else if (55 > sqrt(sq(mouseX-440)+sq(mouseY-360)) && mousepressed && !mousereleased) {
-      if (mute) music.unmuteMusic();
-      else music.muteMusic();
+      if (mute) {
+        music.unmuteMusic();
+        muteSound = false;
+        muteMusic = false;
+      }
+      else {
+        music.muteMusic();
+        muteSound = true;
+        muteMusic = true;
+      }
       mute = !mute;
       mousereleased = true;
     }
@@ -190,11 +198,15 @@ void mute() {
   if (keysPressed['M'] && !keysReleased['M'] && mute) {
     music.unmuteMusic();
     mute = false;
+    muteSound = false;
+    muteMusic = false;
     keysReleased['M'] = true;
   }
   else if (keysPressed['M'] && !keysReleased['M'] && !mute) {
     music.muteMusic();
     mute = true;
+    muteSound = true;
+    muteMusic = true;
     keysReleased['M'] = true;
   }
 }

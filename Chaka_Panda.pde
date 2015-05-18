@@ -33,7 +33,7 @@ String[] highscoreName;
 int[] highscorePoints;
 String name = "";
 float x;
-int speed = -5;
+float speed = -3.75f;
 ArrayList<Platform> platforms = new ArrayList<Platform>(); //Arraylist voor alle instances van klasse Platform, zie tab Platform
 ArrayList<Bamboe> bamboes = new ArrayList<Bamboe>(); //^ maar voor Bamboe
 ArrayList<Blockade> blockades = new ArrayList<Blockade>(); //^maar voor Blockades
@@ -136,19 +136,30 @@ void reset() {
 
 void spawn() {
   if (frames%180 == 0 && platforms.size()-1 < frames/180) { //frames%180 = "wat blijft er over als je frames door 180 deelt", telt dus om de seconde: 0, 1, 2, 0, 1, 2 etc. Kijkt ook naar hoeveel platforms er al zijn zodat hij er niet 1000 per seconde spawnt
-    platforms.add(new Platform(1280, random(300, 600), random(600+600/(40000/score), 1000+1000/(40000/score)), 700, speed+speed/(20000/score))); //maak nieuw platform rechts op het scherm, op random hoogte, met random breedte, beweegt met snelheid 5
+    float platformX = 1280;
+    float platformY = random(300, 600);
+    float platformW = random(450+450/(20000/score), 750+750/(20000/score)); //600-1000 * 0.75 = 450-750
+    float platformH = sprPlatform.height;
+    float platformSpeed = speed+speed/(12000/score);
+    platforms.add(new Platform(platformX, platformY, platformW, platformH, platformSpeed)); //maak nieuw platform rechts op het scherm, op random hoogte, met random breedte, beweegt met snelheid 5
     Platform newestPlatform = platforms.get(platforms.size()-1);
-    bamboes.add(new Bamboe(1800, random(newestPlatform.y-300, newestPlatform.y-100), speed+speed/(20000/score))); //zelfde als platform maar zonder breedte/hoogte, en iets verder naar rechts
+    bamboes.add(new Bamboe(random(1050,1525), random(newestPlatform.y-225, newestPlatform.y-75), speed+speed/(12000/score))); //zelfde als platform maar zonder breedte/hoogte, en iets verder naar rechts
+    
     int randomInt = int(random(3));
-    if (randomInt == 0) {
-      blockades.add(new Blockade(random(1400, 1550), newestPlatform.y-sprBoom.height, speed+speed/(20000/score), sprBoom, ptBoom));
+    PImage sprite = sprBoom;
+    ParticleSystem particle = ptBoom;
+    switch (randomInt) {
+      case 0: sprite = sprBoom;
+        particle = ptBoom;
+        break;
+      case 1: sprite = sprRock;
+        particle = ptRock;
+        break;
+      case 2: sprite = sprBamboo2;
+        particle = ptBamboo2;
+        break;
     }
-    else if (randomInt == 1) {
-      blockades.add(new Blockade(random(1400, 1550), newestPlatform.y-sprRock.height, speed+speed/(20000/score), sprRock, ptRock));
-    }
-    else if (randomInt == 2) {
-      blockades.add(new Blockade(random(1400, 1550), newestPlatform.y-sprBamboo2.height, speed+speed/(20000/score), sprBamboo2, ptBamboo2));
-    }
+    blockades.add(new Blockade(random(1400, 1550), newestPlatform.y-sprite.height, speed+speed/(10000/score), sprite, particle));
   }
 }
 

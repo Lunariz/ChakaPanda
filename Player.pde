@@ -28,7 +28,6 @@ class Player {
     dubbelJump();
     dash();
     move();
-    dieDraw();
     die();
     y += vy;
     x += vx;
@@ -58,13 +57,19 @@ class Player {
     for (int i=0; i<platforms.size(); i++) {
       Platform platform = platforms.get(i);
       if (platform != null) {
-        if (x+w >= platform.x && x <= platform.x+platform.w && y+h >= platform.y && y <= platform.y+platform.h) { //vergelijkt hitboxes van player en platform, als ze matchen en op de goede plek staan hebben we een platform om op te staan
-          onGround = true;
-          dubbeljump = 1;
-          currentPlatform = platform;
+        if (x+w >= platform.x && x <= platform.x+platform.w && y+h >= platform.y) { //vergelijkt hitboxes van player en platform, als ze matchen en op de goede plek staan hebben we een platform om op te staan
+          if (y+h <= platform.y+0.1f*platform.h) {
+            onGround = true;
+            dubbeljump = 1;
+            currentPlatform = platform;
+          }
+          else x = platform.x-w;
         }
       }
     }
+  }
+  
+  void checkFall() {
     if (currentPlatform != null) { //als we onGround zijn: simuleer zwaartekracht d.m.v. vy++
       if (onGround) {
         y = currentPlatform.y-h;
@@ -88,7 +93,7 @@ class Player {
           score += 200;
           bamboes.set(i, null);
           ptBamboo.emit(20);
-          if (!mute && !muteSound) {
+          if (!muteSound) {
             Bamboe.trigger();
           }
         }
@@ -104,14 +109,20 @@ class Player {
           if (vx > 0) {
             blockade.particle.emit(20);
             blockades.set(i, null);
-            if (!mute && !muteSound) {
+            if (!muteSound) {
               Hit.trigger();
             }
+          }
+          else if (y+h <= blockade.y+0.1f*blockade.h) {
+            onGround = true;
+            dubbeljump = 1;
+            currentPlatform = blockade;
           }
           else if (invincibleTime == 0) x = blockade.x-w;
         }
       }
     }
+    checkFall();
   }
 
 
@@ -119,23 +130,20 @@ class Player {
     if (onGround && keysPressed[UP]) {
       vy = -20;
       keysReleased[UP] = true;
-      if (!mute && !muteSound) {
+      if (!muteSound) {
         Jump.trigger();
       }
     }
     if (x > 150 && dashTimer <= 1.5) vx = -3;
     else if (dashTimer <= 1.3) vx = 0;
-    //    if (keysPressed[LEFT]) vx = -5;
-    //    else if (keysPressed[RIGHT]) vx = 5;
-    //    else vx = 0;
   }
 
   void dubbelJump() {
-    if (!onGround && keysPressed[UP] && !keysReleased[UP] && dubbeljump > 0) {
+    if (!onGround && keysPressed[UP] && !keysReleased[UP] && dubbeljump > 0 && invincibleTime == 0) {
       vy = -20;
       dubbeljump--;
       keysReleased[UP] = true;
-      if (!mute && !muteSound) {
+      if (!muteSound) {
         Jump.trigger();
       }
     }
@@ -145,7 +153,7 @@ class Player {
     if (keysPressed[RIGHT] && dashTimer <= 0) { 
       vx = 20;
       dashTimer = 2;
-      if (!mute && !muteSound) {
+      if (!muteSound) {
         Dash.trigger();
       }
     }
@@ -162,7 +170,7 @@ class Player {
         x = 150;
         y = 10;
         invincibleTime = 60; //60 frames = 1 seconde
-        if (!mute && !muteSound) {
+        if (!muteSound) {
           GameOver.trigger();
         }
       }
@@ -175,14 +183,6 @@ class Player {
     if (invincibleTime > 0) { //Als speler net dood is gegaan: geef een korte tijd totdat hij uit de lucht valt
       invincibleTime -= 1;
       vy = 0;
-    }
-  }
-
-  void dieDraw() {
-    if (gameOver) {
-      fill(0);
-      text("GAME OVER", 570, 320);
-      //      text("Druk enter om verder te gaan", 540, 400);
     }
   }
 }

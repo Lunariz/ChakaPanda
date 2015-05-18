@@ -54,7 +54,6 @@ class Music {
   void add(String sampleFileName) {
     AudioSample sample = minim.loadSample(sampleFileName);
     samples.put(sampleFileName, sample);    
-    println(sampleFileName);
   }
 
   // trigger a loaded sample by fileName
