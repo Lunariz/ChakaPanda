@@ -54,8 +54,8 @@ class Player {
   
   void checkGround() {
     onGround = false;
-    for (int i=0; i<platforms.size(); i++) {
-      Platform platform = platforms.get(i);
+    for (int i=0; i<gameState.platforms.size(); i++) {
+      Platform platform = gameState.platforms.get(i);
       if (platform != null) {
         if (x+w >= platform.x && x <= platform.x+platform.w && y+h >= platform.y) { //vergelijkt hitboxes van player en platform, als ze matchen en op de goede plek staan hebben we een platform om op te staan
           if (y+h <= platform.y+0.1f*platform.h) {
@@ -86,14 +86,14 @@ class Player {
   }
 
   void hitBamboe() {
-    for (int i=0; i<bamboes.size(); i++) {
-      Bamboe bamboe = bamboes.get(i);
+    for (int i=0; i<gameState.bamboes.size(); i++) {
+      Bamboe bamboe = gameState.bamboes.get(i);
       if (bamboe != null) {
         if (x+w >= bamboe.x && x <= bamboe.x+bamboe.w && y+h >= bamboe.y && y <= bamboe.y+bamboe.h) { //vergelijkt hitboxes van player en bamboe, etc
-          score += 200;
-          bamboes.set(i, null);
+          gameState.score += 200;
+          gameState.bamboes.set(i, null);
           ptBamboo.emit(20);
-          if (!muteSound) {
+          if (!gameState.muteSound) {
             Bamboe.trigger();
           }
         }
@@ -102,14 +102,14 @@ class Player {
   }
 
   void hitBlockade() {
-    for (int i=0; i<blockades.size(); i++) {
-      Blockade blockade = blockades.get(i);
+    for (int i=0; i<gameState.blockades.size(); i++) {
+      Blockade blockade = gameState.blockades.get(i);
       if (blockade != null) {
         if (x+w >= blockade.x && x <= blockade.x+blockade.w && y+h >= blockade.y && y <= blockade.y+blockade.h) { //vergelijkt hitboxes van player en bamboe, etc
           if (vx > 0) {
             blockade.particle.emit(20);
-            blockades.set(i, null);
-            if (!muteSound) {
+            gameState.blockades.set(i, null);
+            if (!gameState.muteSound) {
               Hit.trigger();
             }
           }
@@ -130,7 +130,7 @@ class Player {
     if (onGround && keysPressed[UP]) {
       vy = -20;
       keysReleased[UP] = true;
-      if (!muteSound) {
+      if (!gameState.muteSound) {
         Jump.trigger();
       }
     }
@@ -143,7 +143,7 @@ class Player {
       vy = -20;
       dubbeljump--;
       keysReleased[UP] = true;
-      if (!muteSound) {
+      if (!gameState.muteSound) {
         Jump.trigger();
       }
     }
@@ -153,7 +153,7 @@ class Player {
     if (keysPressed[RIGHT] && dashTimer <= 0) { 
       vx = 20;
       dashTimer = 2;
-      if (!muteSound) {
+      if (!gameState.muteSound) {
         Dash.trigger();
       }
     }
@@ -170,14 +170,14 @@ class Player {
         x = 150;
         y = 10;
         invincibleTime = 60; //60 frames = 1 seconde
-        if (!muteSound) {
+        if (!gameState.muteSound) {
           GameOver.trigger();
         }
       }
       else {
         y = 5000;
         x = -90;
-        gameOver = true;
+        gameState.gameOver = true;
       }
     }
     if (invincibleTime > 0) { //Als speler net dood is gegaan: geef een korte tijd totdat hij uit de lucht valt
