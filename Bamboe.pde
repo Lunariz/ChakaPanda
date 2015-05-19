@@ -1,15 +1,7 @@
- class Bamboe {
-  float x,y;
-  float vx,vy; //snelheid
-  float w,h; //grootte
-  boolean onGround = true;
+class Bamboe extends Object{
   
-  Bamboe(float startX, float startY, float startvx) {
-    x = startX;
-    y = startY;
-    w = sprBamboo.width;
-    h = sprBamboo.height;
-    vx = startvx;
+  Bamboe(float startX, float startY, float startvx, PImage assignSprite) {
+    super(startX, startY, startvx, assignSprite);
   }
   
   void update() {

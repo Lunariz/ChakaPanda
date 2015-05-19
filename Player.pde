@@ -1,23 +1,17 @@
-class Player {
-  float x, y;
-  float vx, vy;
-  float w, h;
+class Player extends Object {
   boolean onGround = true; //staat de speler op een platform
   int lives = 3;
   int dubbeljump = 1;
 
   float invincibleTime = 0;
   float dashTimer = 0;
-  PImage sprPlayer;
+  PImage[] animPlayer;
 
   Platform currentPlatform; //op welk platform staat de speler op het moment / stond de speler voor het laatst
 
-  Player(float startX, float startY) {
-    x = startX;
-    y = startY;
-    animate();
-    w = sprPlayer.width;
-    h = sprPlayer.height;
+  Player(float startX, float startY, PImage[] imageSet) {
+    super(startX, startY, 0, imageSet[0]);
+    animPlayer = imageSet;
   }
 
   void update() {
@@ -44,12 +38,16 @@ class Player {
     ptRock.y0 = y;
     ptRock.update();
   }
+  
+  void draw() {
+    image(sprite, x, y+20, w, h);
+  }
 
   void animate() {
     int animSpeed = 200; //lager = sneller
-    if (!onGround) sprPlayer = animPlayer[3];
-    else sprPlayer = animPlayer[(millis()/animSpeed)%3];
-    if (vx > 0 && dashTimer*9f > 15f) sprPlayer = animPlayer[(6-(int) (dashTimer*9f-15f))];
+    if (!onGround) sprite = animPlayer[3];
+    else sprite = animPlayer[(millis()/animSpeed)%3];
+    if (vx > 0 && dashTimer*9f > 15f) sprite = animPlayer[(6-(int) (dashTimer*9f-15f))];
   }
   
   void checkGround() {

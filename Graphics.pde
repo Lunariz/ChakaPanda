@@ -2,60 +2,29 @@ void drawGame() { //alles wat hier gebeurt wordt onderaan uitgelegd
   drawBackground();
   if (!gameState.gameOver) {
     for (Platform platform : gameState.platforms) { // voor elk platform van type Platform in ArrayList platforms, doe: draw
-      if (platform != null) drawPlatform(platform);
+      if (platform != null) platform.draw();
     }
     for (Bamboe bamboe : gameState.bamboes) {
-      if (bamboe != null) drawBamboe(bamboe);
+      if (bamboe != null) bamboe.draw();
     }
     for (Blockade blockade : gameState.blockades) {
-      if (blockade != null) drawBlockade(blockade);
+      if (blockade != null) blockade.draw();
     }
-    drawPlayer();
+    gameState.player.draw();
     drawGUI();
   }
   drawMenu();
 }
 
 void drawBackground() {
-  image(background, 0, 0, 1280, 720);
-}
-
-void drawPlatform(Platform platform) {
-  //noStroke();
-  //fill(0,255,0);
-  //rect(platform.x, platform.y, platform.sizeX, platform.sizeY);
-  image(sprPlatform, platform.x, platform.y, platform.w, platform.h);
-}
-
-void drawBamboe(Bamboe bamboe) {
-  //  fill(0);
-  //  ellipse(bamboe.x, bamboe.y, 20, 20);
-  image(sprBamboo, bamboe.x, bamboe.y);
-}
-
-void drawBlockade(Blockade blockade) {
-  //fill(0);
-  //rect(blockade.x, blockade.y, blockade.sizeX, blockade.sizeY);
-  ptBamboo2.draw();
-  ptRock.draw();
-  ptBoom.draw();
-  image(blockade.sprite, blockade.x, blockade.y+20);
-}
-
-void drawPlayer() {
-  //fill(0);
-  //if (player.invincibleTime%0.25 >= 0.125) fill(255); //zorgt er voor dat player wit&zwart flikkert als hij net dood was
-  //rect(player.x,player.y,50,50);
-  Player player = gameState.player;
-  ptBamboo.draw();
-  image(player.sprPlayer, player.x, player.y+20);// tekent de panda ipv een vierkant
+  image(gameState.images.find("background"), 0, 0, 1280, 720);
 }
 
 void drawGUI() {
   //fill(0);
   for (int i=0; i<gameState.player.lives; i++) { //Tekent zoveel bolletjes als de speler levens heeft
     //ellipse(25+50*i,40,10,10);
-    image(sprLives, 10+(50 * i), 40);
+    image(gameState.images.find("sprLives"), 10+(50 * i), 40);
   }
   fill(0);
   stroke(0);
@@ -69,6 +38,17 @@ void drawGUI() {
 }
 
 void drawMenu() {
+  PImage mainmenu = gameState.images.find("mainmenu");
+  PImage gameover = gameState.images.find("gameover");
+  PImage besturing = gameState.images.find("besturing");
+  PImage highscore = gameState.images.find("highscore");
+  PImage scoreenter = gameState.images.find("scoreenter");
+  PImage pauze = gameState.images.find("pauze");
+  PImage sound = gameState.images.find("sound");
+  PImage sound1 = gameState.images.find("sound1");
+  PImage sound2 = gameState.images.find("sound2");
+  PImage sound3 = gameState.images.find("sound3");
+  
   if (gameState.mainMenu) image(mainmenu, 0, 0, 1280, 720);
   if (gameState.gameOver && !gameState.highScore) image(gameover, 0, 0, 1280, 720);
   if (gameState.highScore && !gameState.gameOver) {
