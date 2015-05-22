@@ -1,3 +1,4 @@
+//This file was supplied with the assignment. It remains unedited.
 // Class for a single particle
 class Particle {
   float x, y, vx, vy, size, particleColor, speed;
@@ -156,7 +157,7 @@ class ParticleSystem {
     }
   }
 
-  // creal the particle system
+  // clear the particle system
   void reset() {
     particles.clear();
   }

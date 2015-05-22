@@ -1,6 +1,6 @@
+//This file was supplied with the assignment. I only edited the constructor.
 import ddf.minim.*;
 import java.util.*;    
-
 
 AudioSample Jump;
 AudioSample Dash;

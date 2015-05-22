@@ -1,33 +1,43 @@
+//These variables contain the user input data
 boolean[] keysPressed = new boolean[256];
 boolean[] keysReleased = new boolean[256];
 boolean mousepressed = false;
 boolean mousereleased = true;
 
+//Pressed and Released: these variables exist for every button. Pressed exists to check for user interaction with menus. Release exists to prevent keypresses to press multiple buttons:
+//a key needs to be released before it can be pressed again, so one click cannot activate two buttons
+
+//This gets called as an event when the player presses a button (on the keyboard)
+//TODO: Fix bug where 'special keys' (e.g. Windows Key) throw an array index exception
 void keyPressed() {
   keysPressed[keyCode] = true;
   keysReleased[keyCode] = false;
 }
 
+//This gets called as an event when the player releases a button (on the keyboard)
 void keyReleased() {
   keysPressed[keyCode] = false;
   keysReleased[keyCode] = true;
 }
 
+//This gets called as an event when the player presses a mousebutton
+//The mousereleased statement may seem out of place here, but it is correct. Because there is no mouseReleased() event, mousereleased is set back to true when a player clicks on a button
 void mousePressed() {
   mousepressed = true;
   mousereleased = false;
 }
 
+//Pauses or unpauses the game if the player presses P
 void pause() {
-  if (keysPressed['P'] && !keysReleased['P'] && gameState.inGame()) { //keysReleased zorgt er voor dat P ingedrukt houden niet constant pause aan en uit zet
+  if (keysPressed['P'] && !keysReleased['P'] && gameState.inGame()) {
     gameState.pause = !gameState.pause;
     keysReleased['P'] = true;
   }
 }
 
+//Compares mouse location to a LOT of button hitboxes
+//TODO: Obviously, this method is in for some serious refactoring. Probably along the lines of creating a Button class with a position and size, and possibly a sprite.
 void clickMenu() {
-//  !pause && !gameOver && !highScore && !mainMenu && !instructions && !options
-  
   if (gameState.pause) {
     if (mouseX >= 530 && mouseX <= 770 && mouseY >= 270 && mouseY <= 340 && mousepressed && !mousereleased) {
       gameState.pause = false;
@@ -145,6 +155,8 @@ void clickMenu() {
       gameState.name = gameState.name.substring(0, gameState.name.length()-1);
       keysReleased[8] = true;
     }
+    //This particular if statement inserts the attained score in the highscorelist, and writes the new list to the highscorefiles
+    //TODO: Obviously, this functionality is completely out of place, and needs to be moved
     if (mouseX >= 400 && mouseX <= 915 && mouseY >= 560 && mouseY <= 640 && mousepressed && !mousereleased) {
       int[] tempHighscorePoints = new int[gameState.highscorePoints.length+1];
       String[] tempHighscoreName = new String[gameState.highscoreName.length+1];
@@ -195,6 +207,8 @@ void clickMenu() {
   }
 }
 
+//Mutes or unmutes the game if the player presses M
+//TODO: Shorten this
 void mute() {
   if (keysPressed['M'] && !keysReleased['M'] && gameState.mute) {
     music.unmuteMusic();

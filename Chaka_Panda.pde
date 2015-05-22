@@ -1,37 +1,49 @@
-GameState gameState;
-Music music;
-ParticleSystem ptBoom;
-ParticleSystem ptBamboo;
+GameState gameState;      //State of the game, updates while not in a menu
+Music music;              //Background music
+ParticleSystem ptBoom;    //Particlesystems for collision with Blockades
+ParticleSystem ptBamboo;  //Todo: move this to a ContentHandler in gameState
 ParticleSystem ptBamboo2;
 ParticleSystem ptRock;
 
-float x;
-int blokade;
-
+//Setup runs once, when the game first starts
 void setup() {
   frameRate(60);
   frame.setTitle("Chaka Panda");
   size(1280, 720);
   
-  music = new Music();
+  //Load and play the music
+  music = new Music();            
   music.loadMusic("music.mp3");
   music.playMusic();
-  makeParticles();
   
+  //Initialize the ParticleSystems
+  //TODO: move to gameState
+  makeParticles();                
+  
+  //Initialize gameState, includes: creating a player, creating settings and loading images
   gameState = new GameState();
 }
 
+//Draw runs constantly, at a framerate of 60fps
 void draw() {
-  background(255); //Begin elke frame met leeg scherm
-  if (gameState.inGame() && !gameState.pause) { //pause() staat hierbuiten zodat hij nog gebruikt kan worden wanneer het spel wel gepauzeerd is
+  
+  if (gameState.inGame() && !gameState.pause) {
     gameState.update();
   }
+  
+  
+  //Clear the screen, redraw (updated) game
+  background(255);  
+  drawGame();
+  
+  //Check for user input regarding menus
   clickMenu();
-  drawGame(); //Alles tekenen op het lege scherm, gedefinieerd in tab Graphics
-  pause(); //Pauze aan en uit zetten d.m.v. knop P, gedefinieerd in Interaction
+  pause();
   mute();
 }
 
+//Initializes the ParticleSystems
+//TODO: move to gameState
 void makeParticles() {
   ptBoom= new ParticleSystem(width/2, height/2);
   ptBoom.spreadFactor=1.902098;

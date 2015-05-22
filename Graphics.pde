@@ -1,7 +1,9 @@
-void drawGame() { //alles wat hier gebeurt wordt onderaan uitgelegd
+//TODO: turn Graphics into a class
+//drawGame() calls all draw functions, so that the entire game is drawn
+void drawGame() {
   drawBackground();
   if (!gameState.gameOver) {
-    for (Platform platform : gameState.platforms) { // voor elk platform van type Platform in ArrayList platforms, doe: draw
+    for (Platform platform : gameState.platforms) {
       if (platform != null) platform.draw();
     }
     for (Bamboe bamboe : gameState.bamboes) {
@@ -16,14 +18,14 @@ void drawGame() { //alles wat hier gebeurt wordt onderaan uitgelegd
   drawMenu();
 }
 
+//Draws the background
 void drawBackground() {
   image(gameState.images.find("background"), 0, 0, 1280, 720);
 }
 
+//Draws the ingame GUI (amount of lives, score bar)
 void drawGUI() {
-  //fill(0);
-  for (int i=0; i<gameState.player.lives; i++) { //Tekent zoveel bolletjes als de speler levens heeft
-    //ellipse(25+50*i,40,10,10);
+  for (int i=0; i<gameState.player.lives; i++) {
     image(gameState.images.find("sprLives"), 10+(50 * i), 40);
   }
   fill(0);
@@ -37,7 +39,9 @@ void drawGUI() {
   fill(0);
 }
 
+//Draws a menu depending on the settings in GameState. Draws nothing if the player is ingame
 void drawMenu() {
+  //Could add a 'short circuit here': if (gameState.inGame()) return;
   PImage mainmenu = gameState.images.find("mainmenu");
   PImage gameover = gameState.images.find("gameover");
   PImage besturing = gameState.images.find("besturing");
