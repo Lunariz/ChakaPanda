@@ -12,7 +12,7 @@ The project duration was approximately 4 months (Feb - June 2014)
 The Team
 Our team consisted of:
 Lukas Donkers		Lead Programmer, Scrum Master
-Man-Git Liu			Lead Artist, Programmer
+Man-Git Liu		Lead Artist, Programmer
 Dex van der Zwan	Document Manager, Sound Design
 Vishal Chakawri		Menu Artist
 Florian Kindt		Sound Design
