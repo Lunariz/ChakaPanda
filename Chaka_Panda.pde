@@ -1,7 +1,7 @@
 GameState gameState;      //State of the game, updates while not in a menu
 Music music;              //Background music
 ParticleSystem ptBoom;    //Particlesystems for collision with Blockades
-ParticleSystem ptBamboo;  //Todo: move this to a ContentHandler in gameState
+ParticleSystem ptBamboo;  //TODO: move this to a ContentHandler in gameState
 ParticleSystem ptBamboo2;
 ParticleSystem ptRock;
 
