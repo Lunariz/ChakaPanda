@@ -1,6 +1,6 @@
 Chaka Panda
 
-Looking for an executable? Download the game here: https://www.dropbox.com/s/uduy9lsnm62rhu6/Chaka%20panda.rar?dl=1
+Looking for an executable? Download the game here: http://bit.ly/1SwTfkD
 Warning: the executable contains some bugs that do not appear when running the source code. Still working on that!
 
 The Goal
