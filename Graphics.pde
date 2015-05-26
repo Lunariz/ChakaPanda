@@ -13,6 +13,7 @@ void drawGame() {
       if (blockade != null) blockade.draw();
     }
     gameState.player.draw();
+    drawParticles();
     drawGUI();
   }
   drawMenu();
@@ -21,6 +22,14 @@ void drawGame() {
 //Draws the background
 void drawBackground() {
   image(gameState.images.find("background"), 0, 0, 1280, 720);
+}
+
+//Draws all particles
+void drawParticles() {
+  ArrayList<ParticleSystem> particles = gameState.particles.content;
+  for (int i=0; i<particles.size(); i++) {
+    particles.get(i).draw();
+  }
 }
 
 //Draws the ingame GUI (amount of lives, score bar)

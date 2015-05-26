@@ -34,20 +34,6 @@ class Player extends Object {
     //This should be in Object.update(), and should be replaced by super.update()
     y += vy;
     x += vx;
-    
-    //This is probably out of place, and should be moved to GameState (and called in GameState.update())
-    ptBoom.x0 = x;
-    ptBoom.y0 = y;
-    ptBoom.update();
-    ptBamboo.x0 = x;
-    ptBamboo.y0 = y;
-    ptBamboo.update();
-    ptBamboo2.x0 = x;
-    ptBamboo2.y0 = y;
-    ptBamboo2.update();
-    ptRock.x0 = x;
-    ptRock.y0 = y;
-    ptRock.update();
   }
   
   //Player overrides Object.draw(), because it needs to be drawn slightly lower to walk 'in the grass' instead of 'above the grass' when standing on a platform
@@ -108,6 +94,9 @@ class Player extends Object {
         if (x+w >= bamboe.x && x <= bamboe.x+bamboe.w && y+h >= bamboe.y && y <= bamboe.y+bamboe.h) {
           gameState.score += 200;
           gameState.bamboes.set(i, null);
+          ParticleSystem ptBamboo = gameState.particles.find("ptBamboo");
+          ptBamboo.x0 = x;
+          ptBamboo.y0 = y;
           ptBamboo.emit(20);
           if (!gameState.muteSound) {
             Bamboe.trigger();
@@ -124,6 +113,8 @@ class Player extends Object {
       if (blockade != null) {
         if (x+w >= blockade.x && x <= blockade.x+blockade.w && y+h >= blockade.y && y <= blockade.y+blockade.h) {
           if (vx > 0) {
+            blockade.particle.x0 = x;
+            blockade.particle.y0 = y;
             blockade.particle.emit(20);
             gameState.blockades.set(i, null);
             if (!gameState.muteSound) {
