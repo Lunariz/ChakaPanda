@@ -1,7 +1,7 @@
 Chaka Panda
 
-Looking for an executable? Download the game here: http://bit.ly/1SwTfkD
-Warning: the executable contains some bugs that do not appear when running the source code. Still working on that!
+Looking for an executable? Download the game here: http://tinyurl.com/ChakaPanda
+Warning: the executable contains some bugs that do not appear when running the source code.
 
 The Goal
 Chaka Panda was commissioned by KlasseTV, during Project Agile Development (PAD).
